@@ -15,6 +15,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+import java.util.Map;
 
 @Component
 public class SpringRabbitListener {
@@ -108,5 +109,10 @@ public class SpringRabbitListener {
     ))
     public void listenAnnTopicQueue2(String msg){
         System.out.println("消费者2接收到topic.queue2的消息：【" + msg + "】");
+    }
+
+    @RabbitListener(queues = "object.queue")
+    public void listenSimpleQueueMessage(Map<String, Object> msg) throws InterruptedException {
+        System.out.println("消费者接收到object.queue消息：【" + msg + "】");
     }
 }
