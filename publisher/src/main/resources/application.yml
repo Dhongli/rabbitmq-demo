@@ -5,6 +5,10 @@ spring:
     virtual-host: /hmall # 虚拟主机
     username: hmall # 用户名
     password: hmall # 密码
+    publisher-confirm-type: correlated # 开启publisher confirm机制，并设置confirm类型
+    publisher-returns: true # 开启publisher return机制
 logging:
+  level:
+    com.itheima.publisher: debug
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
