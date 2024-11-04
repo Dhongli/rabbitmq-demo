@@ -1,5 +1,13 @@
 package com.itheima.consumer.listener;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.ExchangeTypes;
+import org.springframework.amqp.rabbit.annotation.*;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalTime;
+import java.util.Map;
+
 /**
  * @author daihongli
  * @version 1.0
@@ -7,16 +15,7 @@ package com.itheima.consumer.listener;
  * @Description: TODO
  * @Date 2024-11-01 12:45
  */
-import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.rabbit.annotation.Exchange;
-import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalTime;
-import java.util.Map;
-
+@Slf4j
 @Component
 public class SpringRabbitListener {
     // 利用RabbitListener来声明要监听的队列信息
@@ -114,5 +113,14 @@ public class SpringRabbitListener {
     @RabbitListener(queues = "object.queue")
     public void listenSimpleQueueMessage(Map<String, Object> msg) throws InterruptedException {
         System.out.println("消费者接收到object.queue消息：【" + msg + "】");
+    }
+
+    @RabbitListener(queuesToDeclare = @Queue(
+            name = "lazy.queue",
+            durable = "true",
+            arguments = @Argument(name = "x-queue-mode", value = "lazy")
+    ))
+    public void listenLazyQueue(String msg){
+        log.info("接收到 lazy.queue的消息：{}", msg);
     }
 }
